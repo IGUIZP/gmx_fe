@@ -51,7 +51,7 @@ const constants = {
   [AVALANCHE]: {
     nativeTokenSymbol: "AVAX",
     wrappedTokenSymbol: "WAVAX",
-    defaultCollateralSymbol: "MIM",
+    defaultCollateralSymbol: "ETH",
     defaultFlagOrdersEnabled: true,
     positionReaderPropsLength: 9,
     v2: true,
