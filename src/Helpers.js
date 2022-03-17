@@ -2099,6 +2099,7 @@ export function approveTokens({
     Token.abi,
     library.getSigner()
   );
+  console.log(spender, swapAmount)
   contract
     .approve(spender, swapAmount)
     .then(async res => {
@@ -2457,6 +2458,13 @@ export const CHART_PERIODS = {
   "4h": 60 * 60 * 4,
   "1d": 60 * 60 * 24
 };
+
+// export const CHART_PERIODS = {
+//   "24h": 24,
+//   "7d": 24 * 7,
+//   "30d": 24 * 30,
+//   "1y": 24 * 360
+// };
 
 export function getTotalVolumeSum(volumes) {
   if (!volumes || volumes.length === 0) {

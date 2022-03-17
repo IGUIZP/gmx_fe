@@ -1037,11 +1037,13 @@ export default function SwapBox(props) {
           usdgSupply,
           totalTokenWeights
         );
+        console.log(stableTokenAmount, 'stableTokenAmount')
         stableTokenAmount = nextToAmount;
         if (stableTokenAmount.gt(shortCollateralToken.availableAmount)) {
           return [`Insufficient liquidity, change "Profits In"`];
         }
 
+        console.log(shortCollateralToken, 'shortCollateralToken')
         if (
           shortCollateralToken.bufferAmount &&
           shortCollateralToken.poolAmount &&
@@ -1719,7 +1721,8 @@ export default function SwapBox(props) {
       return;
     }
 
-    const contractAddress = chainId === METEORA ? getContract(chainId, "PositionManager") : routerAddress
+    //chainId === METEORA ? getContract(chainId, "PositionManager") :
+    const contractAddress = routerAddress
     const contract = new ethers.Contract(
       contractAddress,
       Router.abi,
@@ -1806,6 +1809,7 @@ export default function SwapBox(props) {
       },
       infoTokens,
       getTokenInfo,
+      swapAmount: fromAmount,
       pendingTxns,
       setPendingTxns
     });

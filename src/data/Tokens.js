@@ -326,6 +326,7 @@ const TOKENS = {
       decimals: 18,
       address: "0x09A9137b4707CA685829A5372F0aB7987A70EBCd",
       isWrapped: true,
+      isShortable: true,
       imageUrl:
         "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
     },
@@ -353,6 +354,15 @@ const TOKENS = {
       symbol: "BNB",
       decimals: 18,
       address: "0xCf4374E64BB2EeC34dD38F0b1Ba7e01f3aca093d",
+      isWrapped: true,
+      imageUrl:
+        "https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389"
+    },
+    {
+      name: "DAI Token",
+      symbol: "DAI",
+      decimals: 18,
+      address: "0x0836C5E085E512D41160C4B36a634cD87e0b69aA",
       isWrapped: true,
       imageUrl:
         "https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389"

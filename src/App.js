@@ -144,7 +144,7 @@ function AppHeaderUser({
     {
       label: "Meteora",
       value: METEORA,
-      icon: "ic_arbitrum_24.svg",
+      icon: "85.png",
       color: "#264f79"
     },
     // {

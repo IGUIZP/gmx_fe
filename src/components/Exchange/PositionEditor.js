@@ -258,7 +258,8 @@ export default function PositionEditor(props) {
       return
     }
 
-    const contractAddress = chainId === METEORA ? getContract(chainId, "PositionManager") : routerAddress
+    //chainId === METEORA ? getContract(chainId, "PositionManager") :
+    const contractAddress = routerAddress
     const contract = new ethers.Contract(contractAddress, Router.abi, library.getSigner())
     callContract(chainId, contract, method, params, {
       value,
