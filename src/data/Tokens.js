@@ -318,10 +318,50 @@ const TOKENS = {
     //   decimals: 6,
     //   isStable: true
     // }
+  ],
+  85: [
+    {
+      name: "WGT Token",
+      symbol: "WGT",
+      decimals: 18,
+      address: "0x09A9137b4707CA685829A5372F0aB7987A70EBCd",
+      isWrapped: true,
+      imageUrl:
+        "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
+    },
+    {
+      name: "ETH Token",
+      symbol: "ETH",
+      decimals: 18,
+      address: "0x7b94d9EeFddd440130Af72bcD02F3ad394b60eb1",
+      isNative: true,
+      isShortable: true,
+      imageUrl:
+        "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
+    },
+    {
+      name: "BTC Token",
+      symbol: "BTC",
+      decimals: 18,
+      address: "0x7Abb60B462718FdAd5Bb4fb6D78f1048EB0E00D0",
+      isShortable: true,
+      imageUrl:
+        "https://assets.coingecko.com/coins/images/7598/thumb/wrapped_bitcoin_wbtc.png?1548822744"
+    },
+    {
+      name: "BNB Token",
+      symbol: "BNB",
+      decimals: 18,
+      address: "0xCf4374E64BB2EeC34dD38F0b1Ba7e01f3aca093d",
+      isWrapped: true,
+      imageUrl:
+        "https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389"
+    },
+
   ]
 };
 
-const CHAIN_IDS = [56, 97, 42161, 421611, 43114];
+const CHAIN_IDS = [85];
 
 const TOKENS_MAP = {};
 const TOKENS_BY_SYMBOL_MAP = {};

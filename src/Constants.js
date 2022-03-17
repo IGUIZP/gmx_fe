@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 
-import { MAINNET, TESTNET, ARBITRUM_TESTNET, ARBITRUM, AVALANCHE, expandDecimals } from "./Helpers"
+import { MAINNET, TESTNET, ARBITRUM_TESTNET, METEORA, AVALANCHE, expandDecimals } from "./Helpers"
 
 const { parseEther } = ethers.utils
 
@@ -35,10 +35,10 @@ const constants = {
     v2: true
   },
 
-  [ARBITRUM]: {
-    nativeTokenSymbol: "ETH",
-    wrappedTokenSymbol: "WETH",
-    defaultCollateralSymbol: "USDC",
+  [METEORA]: {
+    nativeTokenSymbol: "GT",
+    wrappedTokenSymbol: "WGT",
+    defaultCollateralSymbol: "ETH",
     defaultFlagOrdersEnabled: false,
     positionReaderPropsLength: 9,
     v2: true,

@@ -16,7 +16,7 @@ import {
   helperToast,
   formatAmount,
   bigNumberify,
-  ARBITRUM,
+  METEORA,
   USD_DECIMALS,
   USDG_DECIMALS,
   LONG,
@@ -301,7 +301,7 @@ export default function SwapBox(props) {
   const prevNeedOrderBookApproval = usePrevious(needOrderBookApproval);
 
   let needPositionManagerApproval = (isLong || isShort) && isMarketOrder && !positionManagerApproved
-  needPositionManagerApproval = needPositionManagerApproval && chainId === ARBITRUM
+  needPositionManagerApproval = needPositionManagerApproval && chainId === METEORA
   const prevNeedPositionManagerApproval = usePrevious(needPositionManagerApproval);
 
   useEffect(() => {
@@ -1719,7 +1719,7 @@ export default function SwapBox(props) {
       return;
     }
 
-    const contractAddress = chainId === ARBITRUM ? getContract(chainId, "PositionManager") : routerAddress
+    const contractAddress = chainId === METEORA ? getContract(chainId, "PositionManager") : routerAddress
     const contract = new ethers.Contract(
       contractAddress,
       Router.abi,

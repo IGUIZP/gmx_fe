@@ -10,13 +10,12 @@ import OrderExecutor from '../abis/OrderExecutor.json'
 import Vault from '../abis/Vault.json'
 import Router from '../abis/Router.json'
 import UniPool from '../abis/UniPool.json'
-import UniswapV2 from '../abis/UniswapV2.json'
 import Token from '../abis/Token.json'
 
 import { getContract } from '../Addresses'
 import { getConstant } from '../Constants'
 import {
-  ARBITRUM,
+  METEORA,
   AVALANCHE,
   // DEFAULT_GAS_LIMIT,
   bigNumberify,
@@ -46,7 +45,7 @@ export * from './prices'
 const { AddressZero } = ethers.constants
 
 function getGmxGraphClient(chainId) {
-  if (chainId === ARBITRUM) {
+  if (chainId === METEORA) {
     return arbitrumGraphClient
   } else if (chainId === AVALANCHE) {
     return avalancheGraphClient
@@ -98,7 +97,7 @@ export function useUserStat(chainId) {
 export function useLiquidationsData(chainId, account) {
   const [data, setData] = useState(null)
   useEffect(() => {
-    if (chainId === ARBITRUM && account) {
+    if (chainId === METEORA && account) {
       const query = gql(`{
          liquidatedPositions(
            where: {account: "${account.toLowerCase()}"}
@@ -293,7 +292,7 @@ export function useTrades(chainId, account) {
 }
 
 export function useStakedGmxSupply(library, active) {
-  const chainId = ARBITRUM
+  const chainId = METEORA
   const gmxAddress = getContract(chainId, "GMX")
   const stakedGmxTrackerAddress = getContract(chainId, "StakedGmxTracker")
 
@@ -307,68 +306,41 @@ export function useStakedGmxSupply(library, active) {
 export function useGmxPrice(chainId, libraries, active) {
   const arbitrumLibrary = libraries && libraries.arbitrum ? libraries.arbitrum : undefined
   const { data: gmxPriceFromArbitrum, mutate: mutateFromArbitrum } = useGmxPriceFromArbitrum(arbitrumLibrary, active)
-  const { data: gmxPriceFromAvalanche, mutate: mutateFromAvalanche } = useGmxPriceFromAvalanche()
+  // const { data: gmxPriceFromAvalanche, mutate: mutateFromAvalanche } = useGmxPriceFromAvalanche()
 
-  const gmxPrice = chainId === ARBITRUM ? gmxPriceFromArbitrum : gmxPriceFromAvalanche
+  const gmxPrice = chainId === METEORA ? gmxPriceFromArbitrum : null
   const mutate = useCallback(() => {
-    mutateFromAvalanche()
+    // mutateFromAvalanche()
     mutateFromArbitrum()
-  }, [mutateFromAvalanche, mutateFromArbitrum])
+  }, [ mutateFromArbitrum])
 
   return {
     gmxPrice,
     gmxPriceFromArbitrum,
-    gmxPriceFromAvalanche,
+    // gmxPriceFromAvalanche,
     mutate
   }
 }
 
-function useGmxPriceFromAvalanche() {
-  const poolAddress = getContract(AVALANCHE, "TraderJoeGmxAvaxPool")
-
-  const { data, mutate: updateReserves } = useSWR(["TraderJoeGmxAvaxReserves", AVALANCHE, poolAddress, "getReserves"], {
-    fetcher: fetcher(undefined, UniswapV2)
-  })
-  const { _reserve0: gmxReserve, _reserve1: avaxReserve } = data || {}
-
-  const vaultAddress = getContract(AVALANCHE, "Vault")
-  const avaxAddress = getTokenBySymbol(AVALANCHE, "WAVAX").address
-  const { data: avaxPrice, mutate: updateAvaxPrice } = useSWR([`StakeV2:avaxPrice`, AVALANCHE, vaultAddress, "getMinPrice", avaxAddress], {
-    fetcher: fetcher(undefined, Vault),
-  })
-
-  const PRECISION = bigNumberify(10).pow(18)
-  let gmxPrice
-  if (avaxReserve && gmxReserve && avaxPrice) {
-    gmxPrice = avaxReserve.mul(PRECISION).div(gmxReserve).mul(avaxPrice).div(PRECISION)
-  }
-
-  const mutate = useCallback(() => {
-    updateReserves(undefined, true)
-    updateAvaxPrice(undefined, true)
-  }, [updateReserves, updateAvaxPrice])
-
-  return { data: gmxPrice, mutate }
-}
 
 function useGmxPriceFromArbitrum(library, active) {
-  const poolAddress = getContract(ARBITRUM, "UniswapGmxEthPool")
-  const { data: uniPoolSlot0, mutate: updateUniPoolSlot0 } = useSWR([`StakeV2:uniPoolSlot0:${active}`, ARBITRUM, poolAddress, "slot0"], {
+  const poolAddress = getContract(METEORA, "UniswapGmxEthPool")
+  const { data: uniPoolSlot0, mutate: updateUniPoolSlot0 } = useSWR([`StakeV2:uniPoolSlot0:${active}`, METEORA, poolAddress, "slot0"], {
     fetcher: fetcher(library, UniPool),
   })
 
-  const vaultAddress = getContract(ARBITRUM, "Vault")
-  const ethAddress = getTokenBySymbol(ARBITRUM, "WETH").address
-  const { data: ethPrice, mutate: updateEthPrice } = useSWR([`StakeV2:ethPrice:${active}`, ARBITRUM, vaultAddress, "getMinPrice", ethAddress], {
+  const vaultAddress = getContract(METEORA, "Vault")
+  const ethAddress = getTokenBySymbol(METEORA, "ETH").address
+  const { data: ethPrice, mutate: updateEthPrice } = useSWR([`StakeV2:ethPrice:${active}`, METEORA, vaultAddress, "getMinPrice", ethAddress], {
     fetcher: fetcher(library, Vault),
   })
 
   const gmxPrice = useMemo(() => {
     if (uniPoolSlot0 && ethPrice) {
-      const tokenA = new UniToken(ARBITRUM, ethAddress, 18, "SYMBOL", "NAME")
+      const tokenA = new UniToken(METEORA, ethAddress, 18, "SYMBOL", "NAME")
 
-      const gmxAddress = getContract(ARBITRUM, "GMX")
-      const tokenB = new UniToken(ARBITRUM, gmxAddress, 18, "SYMBOL", "NAME")
+      const gmxAddress = getContract(METEORA, "GMX")
+      const tokenB = new UniToken(METEORA, gmxAddress, 18, "SYMBOL", "NAME")
 
       const pool = new Pool(
         tokenA, // tokenA
@@ -683,13 +655,6 @@ export async function callContract(chainId, contract, method, params, opts) {
     let failMsg
     const [message, type] = extractError(e)
     switch (type) {
-      case NOT_ENOUGH_FUNDS:
-        failMsg = (<div>
-          There is not enough ETH in your account on Arbitrum to send this transaction.<br/>
-          <br/>
-          <a href={"https://arbitrum.io/bridge-tutorial/"} target="_blank" rel="noopener noreferrer">Bridge ETH to Arbitrum</a>
-        </div>)
-        break
       case USER_DENIED:
         failMsg = "Transaction was cancelled."
         break

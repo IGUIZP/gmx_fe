@@ -14,7 +14,7 @@ import {
 } from "react-router-dom";
 
 import {
-  ARBITRUM,
+  METEORA,
   AVALANCHE,
   DEFAULT_SLIPPAGE_AMOUNT,
   SLIPPAGE_BPS_KEY,
@@ -142,17 +142,17 @@ function AppHeaderUser({
   const showSelector = true;
   const networkOptions = [
     {
-      label: "Arbitrum",
-      value: ARBITRUM,
+      label: "Meteora",
+      value: METEORA,
       icon: "ic_arbitrum_24.svg",
       color: "#264f79"
     },
-    {
-      label: "Avalanche",
-      value: AVALANCHE,
-      icon: "ic_avalanche_24.svg",
-      color: "#E841424D"
-    }
+    // {
+    //   label: "Avalanche",
+    //   value: AVALANCHE,
+    //   icon: "ic_avalanche_24.svg",
+    //   color: "#E841424D"
+    // }
   ];
 
   useEffect(() => {

@@ -47,7 +47,7 @@ import Footer from "../../Footer"
 
 import './Exchange.css';
 
-const { AddressZero } = ethers.constants
+const AddressZero = "0x09A9137b4707CA685829A5372F0aB7987A70EBCd"
 
 function getFundingFee(data) {
   let { entryFundingRate, cumulativeFundingRate, size } = data
@@ -322,6 +322,7 @@ export default function Exchange({ savedIsPnlInLeverage, setSavedIsPnlInLeverage
 
   const flagOrdersEnabled = true
   const [orders, updateOrders] = useAccountOrders(flagOrdersEnabled)
+  // const [orders, updateOrders] = useState(undefined)
 
   const [isWaitingForPluginApproval, setIsWaitingForPluginApproval] = useState(false);
   const [isWaitingForPositionManagerApproval, setIsWaitingForPositionManagerApproval] = useState(false);
@@ -367,7 +368,7 @@ export default function Exchange({ savedIsPnlInLeverage, setSavedIsPnlInLeverage
   ].filter(Boolean)
   let [listSection, setListSection] = useLocalStorageByChainId(chainId, 'List-section-v2', LIST_SECTIONS[0]);
   const LIST_SECTIONS_LABELS = {
-    "Orders": orders.length ? `Orders (${orders.length})` : undefined
+    "Orders": orders && orders.length ? `Orders (${orders.length})` : undefined
   }
   if (!LIST_SECTIONS.includes(listSection)) {
     listSection = LIST_SECTIONS[0]

@@ -8,7 +8,7 @@ import Tooltip from '../../components/Tooltip/Tooltip'
 import Footer from "../../Footer"
 
 import Vault from '../../abis/Vault.json'
-import ReaderV2 from '../../abis/ReaderV2.json'
+import ReaderV2 from '../../abis/Reader.json'
 import RewardRouter from '../../abis/RewardRouter.json'
 import RewardReader from '../../abis/RewardReader.json'
 import Token from '../../abis/Token.json'
@@ -26,7 +26,7 @@ import {
   useChainId,
   GLP_DECIMALS,
   USD_DECIMALS,
-  ARBITRUM,
+  METEORA,
   PLACEHOLDER_ACCOUNT,
   getBalanceAndSupplyData,
   getDepositBalanceData,
@@ -395,7 +395,7 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
   const {
     gmxPrice,
     mutate: updateGmxPrice
-  } = useGmxPrice(chainId, { arbitrum: chainId === ARBITRUM ? library : undefined }, active)
+  } = useGmxPrice(chainId, { arbitrum: chainId === METEORA ? library : undefined }, active)
 
   const gmxSupplyUrl = getServerUrl(chainId, "/gmx_supply")
   const { data: gmxSupply, mutate: updateGmxSupply } = useSWR([gmxSupplyUrl], {

@@ -39,7 +39,7 @@ import {
   SECONDS_PER_YEAR,
   USDG_DECIMALS,
   DEFAULT_MAX_USDG_AMOUNT,
-  ARBITRUM,
+  METEORA,
   PLACEHOLDER_ACCOUNT
 } from '../../Helpers'
 
@@ -50,13 +50,13 @@ import BuyInputSection from "../BuyInputSection/BuyInputSection"
 import Tooltip from '../Tooltip/Tooltip'
 import Modal from '../Modal/Modal'
 
-import ReaderV2 from '../../abis/ReaderV2.json'
+import ReaderV2 from '../../abis/Reader.json'
 import RewardReader from '../../abis/RewardReader.json'
-import VaultV2 from '../../abis/VaultV2.json'
+import VaultV2 from '../../abis/Vault.json'
 import GlpManager from '../../abis/GlpManager.json'
 import RewardTracker from '../../abis/RewardTracker.json'
 import Vester from '../../abis/Vester.json'
-import RewardRouter from '../../abis/RewardRouter.json'
+import RewardRouter from '../../abis/RewardRouterV2.json'
 import Token from '../../abis/Token.json'
 
 import glp24Icon from '../../img/ic_glp_24.svg'
@@ -68,7 +68,7 @@ import arbitrum16Icon from '../../img/ic_arbitrum_16.svg'
 
 import "./GlpSwap.css"
 
-const { AddressZero } = ethers.constants
+const AddressZero  = "0x09A9137b4707CA685829A5372F0aB7987A70EBCd"
 
 function getStakingData(stakingInfo) {
   if (!stakingInfo || stakingInfo.length === 0) {
@@ -165,7 +165,7 @@ export default function GlpSwap(props) {
     fetcher: fetcher(library, Vester),
   })
 
-  const { gmxPrice, mutate: updateGmxPrice } = useGmxPrice(chainId, { arbitrum: chainId === ARBITRUM ? library : undefined }, active)
+  // const { gmxPrice, mutate: updateGmxPrice } = useGmxPrice(chainId, { arbitrum: chainId === METEORA ? library : undefined }, active)
 
   const rewardTrackersForStakingInfo = [
     stakedGlpTrackerAddress,
@@ -239,14 +239,14 @@ export default function GlpSwap(props) {
     totalApr = totalApr.add(feeGlpTrackerApr)
   }
 
-  let stakedGlpTrackerAnnualRewardsUsd
-  let stakedGlpTrackerApr
+  // let stakedGlpTrackerAnnualRewardsUsd
+  // let stakedGlpTrackerApr
 
-  if (gmxPrice && stakingData && stakingData.stakedGlpTracker && stakingData.stakedGlpTracker.tokensPerInterval && glpSupplyUsd && glpSupplyUsd.gt(0)) {
-    stakedGlpTrackerAnnualRewardsUsd = stakingData.stakedGlpTracker.tokensPerInterval.mul(SECONDS_PER_YEAR).mul(gmxPrice).div(expandDecimals(1, 18))
-    stakedGlpTrackerApr = stakedGlpTrackerAnnualRewardsUsd.mul(BASIS_POINTS_DIVISOR).div(glpSupplyUsd)
-    totalApr = totalApr.add(stakedGlpTrackerApr)
-  }
+  // if (gmxPrice && stakingData && stakingData.stakedGlpTracker && stakingData.stakedGlpTracker.tokensPerInterval && glpSupplyUsd && glpSupplyUsd.gt(0)) {
+  //   stakedGlpTrackerAnnualRewardsUsd = stakingData.stakedGlpTracker.tokensPerInterval.mul(SECONDS_PER_YEAR).mul(gmxPrice).div(expandDecimals(1, 18))
+  //   stakedGlpTrackerApr = stakedGlpTrackerAnnualRewardsUsd.mul(BASIS_POINTS_DIVISOR).div(glpSupplyUsd)
+  //   totalApr = totalApr.add(stakedGlpTrackerApr)
+  // }
 
   useEffect(() => {
     if (active) {
@@ -259,7 +259,7 @@ export default function GlpSwap(props) {
         updateTokenAllowance(undefined, true)
         updateLastPurchaseTime(undefined, true)
         updateStakingInfo(undefined, true)
-        updateGmxPrice(undefined, true)
+        // updateGmxPrice(undefined, true)
         updateReservedAmount(undefined, true)
         updateGlpBalance(undefined, true)
       })
@@ -270,7 +270,7 @@ export default function GlpSwap(props) {
   }, [active, library, chainId,
     updateVaultTokenInfo, updateTokenBalances, updateBalancesAndSupplies,
     updateAums, updateTotalTokenWeights, updateTokenAllowance,
-    updateLastPurchaseTime, updateStakingInfo, updateGmxPrice,
+    updateLastPurchaseTime, updateStakingInfo,
     updateReservedAmount, updateGlpBalance])
 
   useEffect(() => {
@@ -437,13 +437,13 @@ export default function GlpSwap(props) {
         setIsWaitingForApproval(true)
       },
       infoTokens,
-      getTokenInfo
+      getTokenInfo,
+      swapAmount
     })
   }
 
   const buyGlp = () => {
     setIsSubmitting(true)
-
     const minGlp = glpAmount.mul(BASIS_POINTS_DIVISOR - savedSlippageAmount).div(BASIS_POINTS_DIVISOR)
 
     const contract = new ethers.Contract(rewardRouterAddress, RewardRouter.abi, library.getSigner())
@@ -584,7 +584,7 @@ export default function GlpSwap(props) {
             <div className="GlpSwap-stats-mark">
               <div className="GlpSwap-stats-mark-icon">
                 <img src={glp40Icon} alt="glp40Icon" />
-                {chainId === ARBITRUM ? <img src={arbitrum16Icon} alt="arbitrum16Icon" className="selected-network-symbol" /> : <img src={avalanche16Icon} alt="avalanche16Icon" className="selected-network-symbol" />}
+                {chainId === METEORA ? <img src={arbitrum16Icon} alt="arbitrum16Icon" className="selected-network-symbol" /> : <img src={avalanche16Icon} alt="avalanche16Icon" className="selected-network-symbol" />}
               </div>
               <div className="GlpSwap-stats-mark-info">
                 <div className="GlpSwap-stats-mark-title">GLP</div>
@@ -630,7 +630,7 @@ export default function GlpSwap(props) {
                     </div>
                     <div className="Tooltip-row">
                       <span className="label">Escrowed GMX APR</span>
-                      <span>{formatAmount(stakedGlpTrackerApr, 2, 2, false)}%</span>
+                      {/* <span>{formatAmount(stakedGlpTrackerApr, 2, 2, false)}%</span> */}
                     </div>
                   </>
                 }} />

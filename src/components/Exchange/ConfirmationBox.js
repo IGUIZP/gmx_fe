@@ -305,7 +305,7 @@ export default function ConfirmationBox(props) {
     }
     return (
       <ExchangeInfoRow label="Execution Fee">
-        {formatAmount(executionFee, 18, 4)} ETH
+        {formatAmount(executionFee, 18, 4)} GT
       </ExchangeInfoRow>
     );
   }, [isMarketOrder, executionFee])

@@ -8,7 +8,7 @@ import {
 	BASIS_POINTS_DIVISOR,
   DEPOSIT_FEE,
 	DUST_BNB,
-  ARBITRUM,
+  METEORA,
   helperToast,
   formatAmount,
   bigNumberify,
@@ -71,12 +71,12 @@ export default function PositionEditor(props) {
     fetcher: fetcher(library, Token),
   })
 
-  const isWithdrawalEnabled = chainId === ARBITRUM
+  const isWithdrawalEnabled = chainId === METEORA
 
   const isDeposit = option === DEPOSIT
   const isWithdrawal = option === WITHDRAW
 
-  const needPositionManagerApproval = chainId === ARBITRUM && isDeposit && !positionManagerApproved
+  const needPositionManagerApproval = chainId === METEORA && isDeposit && !positionManagerApproved
 
   let collateralToken
   let maxAmount
@@ -123,7 +123,7 @@ export default function PositionEditor(props) {
 
     if (fromAmount) {
       collateralDelta = isDeposit ? convertedAmount : fromAmount
-      if (position.isLong && chainId === ARBITRUM) {
+      if (position.isLong && chainId === METEORA) {
         collateralDelta = collateralDelta.mul(BASIS_POINTS_DIVISOR - DEPOSIT_FEE).div(BASIS_POINTS_DIVISOR)
       }
       nextLeverage = getLeverage({
@@ -254,11 +254,11 @@ export default function PositionEditor(props) {
 
     if (shouldRaiseGasError(getTokenInfo(infoTokens, collateralTokenAddress), fromAmount)) {
       setIsSwapping(false)
-      helperToast.error(`Leave at least ${formatAmount(DUST_BNB, 18, 3)} ETH for gas`)
+      helperToast.error(`Leave at least ${formatAmount(DUST_BNB, 18, 3)} GT for gas`)
       return
     }
 
-    const contractAddress = chainId === ARBITRUM ? getContract(chainId, "PositionManager") : routerAddress
+    const contractAddress = chainId === METEORA ? getContract(chainId, "PositionManager") : routerAddress
     const contract = new ethers.Contract(contractAddress, Router.abi, library.getSigner())
     callContract(chainId, contract, method, params, {
       value,

@@ -67,7 +67,7 @@ async function getChartPricesFromStats(chainId, symbol, period) {
   // const hostname = 'http://localhost:3113/'
   const timeDiff = CHART_PERIODS[period] * 3000
   const from = Math.floor(Date.now() / 1000 - timeDiff)
-  const url = `${hostname}api/candles/${symbol}?preferableChainId=${chainId}&period=${period}&from=${from}&preferableSource=fast`
+  const url = `${hostname}api/candles/${symbol}?preferableChainId=${'43114'}&period=${period}&from=${from}&preferableSource=fast`
   const TIMEOUT = 5000
   const res = await new Promise((resolve, reject) => {
     setTimeout(() => reject(new Error(`request timeout ${url}`)), TIMEOUT)
@@ -132,7 +132,7 @@ function getCandlesFromPrices(prices, period) {
 }
 
 function getChainlinkChartPricesFromGraph(tokenSymbol, period) {
-  if (['WBTC', 'WETH', 'WAVAX'].includes(tokenSymbol)) {
+  if (['WBTC', 'ETH', 'WAVAX'].includes(tokenSymbol)) {
     tokenSymbol = tokenSymbol.substr(1)
   }
   const marketName = tokenSymbol + '_USD'

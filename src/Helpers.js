@@ -31,9 +31,10 @@ export const MAINNET = 56;
 export const AVALANCHE = 43114;
 export const TESTNET = 97;
 export const ARBITRUM_TESTNET = 421611;
-export const ARBITRUM = 42161;
+// export const METEORA = 42161;
+export const METEORA = 85;
 // TODO take it from web3
-export const DEFAULT_CHAIN_ID = AVALANCHE;
+export const DEFAULT_CHAIN_ID = METEORA;
 export const CHAIN_ID = DEFAULT_CHAIN_ID;
 
 export const MIN_PROFIT_TIME = 3 * 60 * 60; // 3 hours
@@ -44,16 +45,17 @@ const CHAIN_NAMES_MAP = {
   [MAINNET]: "BSC",
   [TESTNET]: "BSC Testnet",
   [ARBITRUM_TESTNET]: "Arbitrum Testnet",
-  [ARBITRUM]: "Arbitrum",
+  [METEORA]: "Meteora",
   [AVALANCHE]: "Avalanche"
 };
 
 const GAS_PRICE_ADJUSTMENT_MAP = {
-  [ARBITRUM]: "0",
+  [METEORA]: "0",
   [AVALANCHE]: "3000000000" // 3 gwei
 };
 
-const ARBITRUM_RPC_PROVIDERS = ["https://rpc.ankr.com/arbitrum"];
+const ARBITRUM_RPC_PROVIDERS = ["https://meteora-evm.gatenode.cc"];
+// const ARBITRUM_RPC_PROVIDERS = ["https://rpc.ankr.com/arbitrum"];
 const AVALANCHE_RPC_PROVIDERS = ["https://api.avax.network/ext/bc/C/rpc"];
 export const WALLET_CONNECT_LOCALSTORAGE_KEY = "walletconnect";
 
@@ -114,7 +116,7 @@ export const TRIGGER_PREFIX_BELOW = "<";
 
 export const MIN_PROFIT_BIPS = 150;
 
-const supportedChainIds = [ARBITRUM, AVALANCHE];
+const supportedChainIds = [METEORA, AVALANCHE];
 const injectedConnector = new InjectedConnector({
   supportedChainIds
 });
@@ -126,7 +128,7 @@ const getWalletConnectConnector = () => {
   return new WalletConnectConnector({
     rpc: {
       [AVALANCHE]: AVALANCHE_RPC_PROVIDERS[0],
-      [ARBITRUM]: ARBITRUM_RPC_PROVIDERS[0]
+      [METEORA]: ARBITRUM_RPC_PROVIDERS[0]
     },
     qrcode: true,
     chainId
@@ -292,8 +294,8 @@ export function getServerBaseUrl(chainId) {
     return "https://gambit-server-staging.uc.r.appspot.com";
   } else if (chainId === ARBITRUM_TESTNET) {
     return "https://gambit-l2.as.r.appspot.com";
-  } else if (chainId === ARBITRUM) {
-    return "https://gmx-server-mainnet.uw.r.appspot.com";
+  } else if (chainId === METEORA) {
+    return "https://meteora-evm.gatenode.cc";
   } else if (chainId === AVALANCHE) {
     return "https://gmx-avax-server.uc.r.appspot.com";
   }
@@ -501,7 +503,6 @@ export function getBuyGlpToAmount(
   glpAmount = glpAmount
     .mul(BASIS_POINTS_DIVISOR - feeBasisPoints)
     .div(BASIS_POINTS_DIVISOR);
-
   return { amount: glpAmount, feeBasisPoints };
 }
 
@@ -1358,7 +1359,7 @@ export const BSC_RPC_PROVIDERS = [
 
 const RPC_PROVIDERS = {
   [MAINNET]: BSC_RPC_PROVIDERS,
-  [ARBITRUM]: ARBITRUM_RPC_PROVIDERS,
+  [METEORA]: ARBITRUM_RPC_PROVIDERS,
   [AVALANCHE]: AVALANCHE_RPC_PROVIDERS
 };
 
@@ -2014,8 +2015,8 @@ export function getExplorerUrl(chainId) {
     return "https://testnet.bscscan.com/";
   } else if (chainId === ARBITRUM_TESTNET) {
     return "https://rinkeby-explorer.arbitrum.io/";
-  } else if (chainId === ARBITRUM) {
-    return "https://arbiscan.io/";
+  } else if (chainId === METEORA) {
+    return "https://gatescan.org/testnet/";
   } else if (chainId === AVALANCHE) {
     return "https://snowtrace.io/";
   }
@@ -2087,6 +2088,7 @@ export function approveTokens({
   onApproveSubmitted,
   getTokenInfo,
   infoTokens,
+  swapAmount,
   pendingTxns,
   setPendingTxns,
   includeMessage
@@ -2098,7 +2100,7 @@ export function approveTokens({
     library.getSigner()
   );
   contract
-    .approve(spender, ethers.constants.MaxUint256)
+    .approve(spender, swapAmount)
     .then(async res => {
       const txUrl = getExplorerUrl(chainId) + "tx/" + res.hash;
       helperToast.success(
@@ -2133,7 +2135,7 @@ export function approveTokens({
       ) {
         failMsg = (
           <div>
-            There is not enough ETH in your account on Arbitrum to send this
+            There is not enough ETH in your account on Meteora to send this
             transaction.
             <br />
             <br />
@@ -2142,7 +2144,7 @@ export function approveTokens({
               target="_blank"
               rel="noopener noreferrer"
             >
-              Bridge ETH to Arbitrum
+              Bridge ETH to Meteora
             </a>
           </div>
         );
@@ -2223,16 +2225,16 @@ const NETWORK_METADATA = {
     rpcUrls: ["https://rinkeby.arbitrum.io/rpc"],
     blockExplorerUrls: ["https://rinkeby-explorer.arbitrum.io/"]
   },
-  [ARBITRUM]: {
-    chainId: "0x" + ARBITRUM.toString(16),
-    chainName: "Arbitrum",
+  [METEORA]: {
+    chainId: "0x" + METEORA.toString(16),
+    chainName: "Meteora",
     nativeCurrency: {
-      name: "ETH",
-      symbol: "ETH",
+      name: "GT",
+      symbol: "GT",
       decimals: 18
     },
     rpcUrls: ARBITRUM_RPC_PROVIDERS,
-    blockExplorerUrls: [getExplorerUrl(ARBITRUM)]
+    blockExplorerUrls: [getExplorerUrl(METEORA)]
   },
   [AVALANCHE]: {
     chainId: "0x" + AVALANCHE.toString(16),
@@ -2298,7 +2300,7 @@ export const getWalletConnectHandler = (
     activate(walletConnect, ex => {
       if (ex instanceof UnsupportedChainIdError) {
         helperToast.error(
-          "Unsupported chain. Switch to Arbitrum network on your wallet and try again"
+          "Unsupported chain. Switch to Meteora network on your wallet and try again"
         );
         console.warn(ex);
       } else if (!(ex instanceof UserRejectedRequestErrorWalletConnect)) {
