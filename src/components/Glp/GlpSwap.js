@@ -68,7 +68,7 @@ import arbitrum16Icon from '../../img/ic_arbitrum_16.svg'
 
 import "./GlpSwap.css"
 
-const AddressZero  = "0x09A9137b4707CA685829A5372F0aB7987A70EBCd"
+const AddressZero  = ethers.constants.AddressZero
 
 function getStakingData(stakingInfo) {
   if (!stakingInfo || stakingInfo.length === 0) {

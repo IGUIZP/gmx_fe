@@ -321,12 +321,19 @@ const TOKENS = {
   ],
   85: [
     {
+      name: "GT",
+      symbol: "GT",
+      decimals: 18,
+      address: ethers.constants.AddressZero,
+      isNative: true,
+      isShortable: true
+    },
+    {
       name: "WGT Token",
       symbol: "WGT",
       decimals: 18,
       address: "0x09A9137b4707CA685829A5372F0aB7987A70EBCd",
       isWrapped: true,
-      isShortable: true,
       imageUrl:
         "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
     },
@@ -336,7 +343,6 @@ const TOKENS = {
       decimals: 18,
       address: "0x7b94d9EeFddd440130Af72bcD02F3ad394b60eb1",
       isShortable: true,
-      isNative: true,
       imageUrl:
         "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
     },

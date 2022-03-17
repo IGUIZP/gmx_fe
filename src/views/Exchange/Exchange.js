@@ -43,10 +43,11 @@ import ExchangeWalletTokens from '../../components/Exchange/ExchangeWalletTokens
 import ExchangeBanner from '../../components/Exchange/ExchangeBanner'
 import Tab from '../../components/Tab/Tab'
 import Footer from "../../Footer"
+import { ethers } from 'ethers'
 
 import './Exchange.css';
 
-const AddressZero = "0x09A9137b4707CA685829A5372F0aB7987A70EBCd"
+const AddressZero = ethers.constants.AddressZero
 
 function getFundingFee(data) {
   let { entryFundingRate, cumulativeFundingRate, size } = data
