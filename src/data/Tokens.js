@@ -335,8 +335,8 @@ const TOKENS = {
       symbol: "ETH",
       decimals: 18,
       address: "0x7b94d9EeFddd440130Af72bcD02F3ad394b60eb1",
-      isNative: true,
       isShortable: true,
+      isNative: true,
       imageUrl:
         "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
     },
@@ -364,6 +364,7 @@ const TOKENS = {
       decimals: 18,
       address: "0x0836C5E085E512D41160C4B36a634cD87e0b69aA",
       isWrapped: true,
+      isStable: true,
       imageUrl:
         "https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389"
     },

@@ -321,6 +321,7 @@ export default function PositionEditor(props) {
         chainId: chainId,
         infoTokens,
         getTokenInfo,
+        swapAmount: fromAmount,
         pendingTxns,
         setPendingTxns
       })

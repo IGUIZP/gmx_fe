@@ -1037,13 +1037,12 @@ export default function SwapBox(props) {
           usdgSupply,
           totalTokenWeights
         );
-        console.log(stableTokenAmount, 'stableTokenAmount')
+
         stableTokenAmount = nextToAmount;
         if (stableTokenAmount.gt(shortCollateralToken.availableAmount)) {
           return [`Insufficient liquidity, change "Profits In"`];
         }
 
-        console.log(shortCollateralToken, 'shortCollateralToken')
         if (
           shortCollateralToken.bufferAmount &&
           shortCollateralToken.poolAmount &&

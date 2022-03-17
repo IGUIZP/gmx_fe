@@ -567,7 +567,7 @@ export default function PositionSeller(props) {
       value,
       sentMsg: "Close submitted!",
       successMsg,
-      failMsg: "Close failed.",
+      failMsg: "Close failed." + position.isLong,
       setPendingTxns
     })
       .then(async res => {

@@ -43,7 +43,7 @@ import {
   PLACEHOLDER_ACCOUNT
 } from '../../Helpers'
 
-import { callContract, useGmxPrice } from '../../Api'
+import { callContract } from '../../Api'
 
 import TokenSelector from '../Exchange/TokenSelector'
 import BuyInputSection from "../BuyInputSection/BuyInputSection"

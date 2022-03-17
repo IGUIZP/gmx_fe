@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react'
 
 import { useWeb3React } from '@web3-react/core'
 import useSWR from 'swr'
-import { ethers } from 'ethers'
 
 import {
   FUNDING_RATE_PRECISION,
@@ -146,7 +145,6 @@ export function getPositionQuery(tokens, nativeTokenAddress) {
   const collateralTokens = []
   const indexTokens = []
   const isLong = []
-
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
     if (token.isStable) { continue }
@@ -424,6 +422,7 @@ export default function Exchange({ savedIsPnlInLeverage, setSavedIsPnlInLeverage
             nativeTokenAddress={nativeTokenAddress}
             setMarket={setMarket}
             orders={orders}
+            swapOption={swapOption}
           />
         }
         {listSection === 'Orders' &&

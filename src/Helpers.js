@@ -2099,7 +2099,6 @@ export function approveTokens({
     Token.abi,
     library.getSigner()
   );
-  console.log(spender, swapAmount)
   contract
     .approve(spender, swapAmount)
     .then(async res => {

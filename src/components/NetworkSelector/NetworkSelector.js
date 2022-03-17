@@ -201,7 +201,7 @@ export default function NetworkSelector(props) {
           className={cx("Selector-box", value.label)}
           onClick={() => toggleModal(true)}
         >
-          <img src={valueIcon.default} alt="valueIcon" />
+          <img src={valueIcon.default} alt="valueIcon" className={"network-icon"} />
           {showCaret && <img src={selectorDropdowns} alt="selectorDropdowns" />}
         </div>
       ) : (
