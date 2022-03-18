@@ -13,9 +13,11 @@ import RewardRouter from '../../abis/RewardRouter.json'
 import RewardReader from '../../abis/RewardReader.json'
 import Token from '../../abis/Token.json'
 import GlpManager from '../../abis/GlpManager.json'
+import GMX from '../../abis/GMX.json'
 
 import { ethers } from 'ethers'
 import {
+  bigNumberify,
   fetcher,
   formatAmount,
   formatKeyAmount,
@@ -392,14 +394,14 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
     fetcher: fetcher(library, ReaderV2, [vesterAddresses]),
   })
 
-  const {
-    gmxPrice,
-    mutate: updateGmxPrice
-  } = useGmxPrice(chainId, { arbitrum: chainId === METEORA ? library : undefined }, active)
+  // const {
+  //   gmxPrice,
+  //   mutate: updateGmxPrice
+  // } = useGmxPrice(chainId, { arbitrum: chainId === METEORA ? library : undefined }, active)
+  const gmxPrice = 10;//需要修改
 
-  const gmxSupplyUrl = getServerUrl(chainId, "/gmx_supply")
-  const { data: gmxSupply, mutate: updateGmxSupply } = useSWR([gmxSupplyUrl], {
-    fetcher: (...args) => fetch(...args).then(res => res.text())
+  const { data: gmxSupply, mutate: updateGmxSupply } = useSWR([`StakeV2:totalSupply:${active}`, chainId, gmxAddress, "totalSupply"], {
+    fetcher: fetcher(library, GMX),
   })
 
   let aum
@@ -434,9 +436,9 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
         updateAums(undefined, true)
         updateNativeTokenPrice(undefined, true)
         updateStakedGmxSupply(undefined, true)
-        updateGmxPrice(undefined, true)
+        // updateGmxPrice(undefined, true)
         updateVestingInfo(undefined, true)
-        updateGmxSupply(undefined, true)
+        // updateGmxSupply(undefined, true)
       })
       return () => {
         library.removeAllListeners('block')
@@ -444,8 +446,11 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
     }
   }, [library, active, updateWalletBalances, updateDepositBalances,
       updateStakingInfo, updateAums, updateNativeTokenPrice,
-      updateStakedGmxSupply, updateGmxPrice,
-      updateVestingInfo, updateGmxSupply])
+      updateStakedGmxSupply,
+      // updateGmxPrice,
+      updateVestingInfo,
+      // updateGmxSupply
+    ])
 
   useEffect(() => {
     window.scrollTo(0, 0)

@@ -2612,47 +2612,47 @@ export function getProcessedData(
   const data = {};
 
   data.gmxBalance = balanceData.gmx;
-  data.gmxBalanceUsd = balanceData.gmx.mul(gmxPrice).div(expandDecimals(1, 18));
+  // data.gmxBalanceUsd = balanceData.gmx.mul(gmxPrice).div(expandDecimals(1, 18));
 
   data.gmxSupply = bigNumberify(gmxSupply);
 
-  data.gmxSupplyUsd = supplyData.gmx.mul(gmxPrice).div(expandDecimals(1, 18));
+  // data.gmxSupplyUsd = supplyData.gmx.mul(gmxPrice).div(expandDecimals(1, 18));
   data.stakedGmxSupply = stakedGmxSupply;
-  data.stakedGmxSupplyUsd = stakedGmxSupply
-    .mul(gmxPrice)
-    .div(expandDecimals(1, 18));
+  // data.stakedGmxSupplyUsd = stakedGmxSupply
+  //   .mul(gmxPrice)
+  //   .div(expandDecimals(1, 18));
   data.gmxInStakedGmx = depositBalanceData.gmxInStakedGmx;
-  data.gmxInStakedGmxUsd = depositBalanceData.gmxInStakedGmx
-    .mul(gmxPrice)
-    .div(expandDecimals(1, 18));
+  // data.gmxInStakedGmxUsd = depositBalanceData.gmxInStakedGmx
+  //   .mul(gmxPrice)
+  //   .div(expandDecimals(1, 18));
 
   data.esGmxBalance = balanceData.esGmx;
-  data.esGmxBalanceUsd = balanceData.esGmx
-    .mul(gmxPrice)
-    .div(expandDecimals(1, 18));
+  // data.esGmxBalanceUsd = balanceData.esGmx
+  //   .mul(gmxPrice)
+  //   .div(expandDecimals(1, 18));
 
   data.stakedGmxTrackerSupply = supplyData.stakedGmxTracker;
-  data.stakedGmxTrackerSupplyUsd = supplyData.stakedGmxTracker
-    .mul(gmxPrice)
-    .div(expandDecimals(1, 18));
+  // data.stakedGmxTrackerSupplyUsd = supplyData.stakedGmxTracker
+  //   .mul(gmxPrice)
+  //   .div(expandDecimals(1, 18));
   data.stakedEsGmxSupply = data.stakedGmxTrackerSupply.sub(
     data.stakedGmxSupply
   );
-  data.stakedEsGmxSupplyUsd = data.stakedEsGmxSupply
-    .mul(gmxPrice)
-    .div(expandDecimals(1, 18));
+  // data.stakedEsGmxSupplyUsd = data.stakedEsGmxSupply
+  //   .mul(gmxPrice)
+  //   .div(expandDecimals(1, 18));
 
   data.esGmxInStakedGmx = depositBalanceData.esGmxInStakedGmx;
-  data.esGmxInStakedGmxUsd = depositBalanceData.esGmxInStakedGmx
-    .mul(gmxPrice)
-    .div(expandDecimals(1, 18));
+  // data.esGmxInStakedGmxUsd = depositBalanceData.esGmxInStakedGmx
+  //   .mul(gmxPrice)
+  //   .div(expandDecimals(1, 18));
 
   data.bnGmxInFeeGmx = depositBalanceData.bnGmxInFeeGmx;
   data.bonusGmxInFeeGmx = depositBalanceData.bonusGmxInFeeGmx;
   data.feeGmxSupply = stakingData.feeGmxTracker.totalSupply;
-  data.feeGmxSupplyUsd = data.feeGmxSupply
-    .mul(gmxPrice)
-    .div(expandDecimals(1, 18));
+  // data.feeGmxSupplyUsd = data.feeGmxSupply
+  //   .mul(gmxPrice)
+  //   .div(expandDecimals(1, 18));
 
   data.stakedGmxTrackerRewards = stakingData.stakedGmxTracker.claimable;
   data.stakedGmxTrackerRewardsUsd = stakingData.stakedGmxTracker.claimable
@@ -2680,13 +2680,13 @@ export function getProcessedData(
     .mul(SECONDS_PER_YEAR)
     .mul(nativeTokenPrice)
     .div(expandDecimals(1, 18));
-  data.gmxAprForNativeToken =
-    data.feeGmxSupplyUsd && data.feeGmxSupplyUsd.gt(0)
-      ? data.feeGmxTrackerAnnualRewardsUsd
-          .mul(BASIS_POINTS_DIVISOR)
-          .div(data.feeGmxSupplyUsd)
-      : bigNumberify(0);
-  data.gmxAprTotal = data.gmxAprForNativeToken.add(data.gmxAprForEsGmx);
+  // data.gmxAprForNativeToken =
+  //   data.feeGmxSupplyUsd && data.feeGmxSupplyUsd.gt(0)
+  //     ? data.feeGmxTrackerAnnualRewardsUsd
+  //         .mul(BASIS_POINTS_DIVISOR)
+  //         .div(data.feeGmxSupplyUsd)
+  //     : bigNumberify(0);
+  // data.gmxAprTotal = data.gmxAprForNativeToken.add(data.gmxAprForEsGmx);
 
   data.totalGmxRewardsUsd = data.stakedGmxTrackerRewardsUsd.add(
     data.feeGmxTrackerRewardsUsd

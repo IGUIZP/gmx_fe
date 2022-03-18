@@ -826,7 +826,8 @@ export default function GlpSwap(props) {
                 var tokenImage = null;
 
                 try {
-                  tokenImage = require('../../img/ic_' + token.symbol.toLowerCase() + '_40.svg')
+                  tokenImage = token.symbol.toLowerCase() === 'gt' ? require('../../img/' + token.symbol.toLowerCase() + '.png')
+                  :require('../../img/ic_' + token.symbol.toLowerCase() + '_40.svg')
                 } catch (error) {
                   // console.log(error)
                 }

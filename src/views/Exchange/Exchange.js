@@ -319,9 +319,10 @@ export default function Exchange({ savedIsPnlInLeverage, setSavedIsPnlInLeverage
   const infoTokens = getInfoTokens(tokens, tokenBalances, whitelistedTokens, vaultTokenInfo, fundingRateInfo)
   const { positions, positionsMap } = getPositions(chainId, positionQuery, positionData, infoTokens, savedIsPnlInLeverage)
 
-  const flagOrdersEnabled = true
-  const [orders, updateOrders] = useAccountOrders(flagOrdersEnabled)
+  const flagOrdersEnabled = false
+  // const [orders, updateOrders] = useAccountOrders(flagOrdersEnabled)
   // const [orders, updateOrders] = useState(undefined)
+  const orders = [];
 
   const [isWaitingForPluginApproval, setIsWaitingForPluginApproval] = useState(false);
   const [isWaitingForPositionManagerApproval, setIsWaitingForPositionManagerApproval] = useState(false);
@@ -426,20 +427,21 @@ export default function Exchange({ savedIsPnlInLeverage, setSavedIsPnlInLeverage
             swapOption={swapOption}
           />
         }
-        {listSection === 'Orders' &&
-          <OrdersList
-            active={active}
-            library={library}
-            pendingTxns={pendingTxns}
-            setPendingTxns={setPendingTxns}
-            infoTokens={infoTokens}
-            positionsMap={positionsMap}
-            chainId={chainId}
-            orders={orders}
-            updateOrders={updateOrders}
-            totalTokenWeights={totalTokenWeights}
-            usdgSupply={usdgSupply}
-          />
+        {
+        //listSection === 'Orders' &&
+          // <OrdersList
+          //   active={active}
+          //   library={library}
+          //   pendingTxns={pendingTxns}
+          //   setPendingTxns={setPendingTxns}
+          //   infoTokens={infoTokens}
+          //   positionsMap={positionsMap}
+          //   chainId={chainId}
+          //   orders={orders}
+          //   updateOrders={updateOrders}
+          //   totalTokenWeights={totalTokenWeights}
+          //   usdgSupply={usdgSupply}
+          // />
         }
         {listSection === 'Trades' &&
           <TradeHistory

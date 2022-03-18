@@ -56,11 +56,14 @@ export default function TokenSelector(props) {
           {tokens.map(token => {
             let tokenPopupImage;
             try {
-              tokenPopupImage = require("../../img/ic_" +
-                token.symbol.toLowerCase() +
-                "_40.svg");
+              tokenPopupImage = ['gt', 'wgt'].includes(token.symbol.toLowerCase()) ? require('../../img/' + 'gt.png')
+              :require('../../img/ic_' + token.symbol.toLowerCase() + '_40.svg')
             } catch (error) {
-              tokenPopupImage = require("../../img/ic_eth_40.svg");
+              try {
+                tokenPopupImage = require('../../img/' + token.symbol.toLowerCase() + '.png')
+              } catch (error) {
+                tokenPopupImage = require("../../img/ic_eth_40.svg");
+              }
             }
             let info = infoTokens ? infoTokens[token.address] : {};
             let mintAmount;
