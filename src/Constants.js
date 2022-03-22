@@ -38,7 +38,7 @@ const constants = {
   [METEORA]: {
     nativeTokenSymbol: "GT",
     wrappedTokenSymbol: "WGT",
-    defaultCollateralSymbol: "DAI",
+    defaultCollateralSymbol: "GT",
     defaultFlagOrdersEnabled: false,
     positionReaderPropsLength: 9,
     v2: true,

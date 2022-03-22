@@ -17,18 +17,15 @@ import GMX from '../../abis/GMX.json'
 
 import { ethers } from 'ethers'
 import {
-  bigNumberify,
   fetcher,
   formatAmount,
   formatKeyAmount,
   getChainName,
   approveTokens,
-  getServerUrl,
   useLocalStorageSerializeKey,
   useChainId,
   GLP_DECIMALS,
   USD_DECIMALS,
-  METEORA,
   PLACEHOLDER_ACCOUNT,
   getBalanceAndSupplyData,
   getDepositBalanceData,
@@ -36,7 +33,7 @@ import {
   getStakingData,
   getProcessedData
 } from '../../Helpers'
-import { callContract, useGmxPrice } from '../../Api'
+import { callContract } from '../../Api'
 import { getConstant } from '../../Constants'
 
 import useSWR from 'swr'
@@ -397,7 +394,7 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
   // const {
   //   gmxPrice,
   //   mutate: updateGmxPrice
-  // } = useGmxPrice(chainId, { arbitrum: chainId === METEORA ? library : undefined }, active)
+  // } = useGmxPrice(chainId, { arbitrum: library }, active)
   const gmxPrice = 10;//需要修改
 
   const { data: gmxSupply, mutate: updateGmxSupply } = useSWR([`StakeV2:totalSupply:${active}`, chainId, gmxAddress, "totalSupply"], {
@@ -438,7 +435,7 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
         updateStakedGmxSupply(undefined, true)
         // updateGmxPrice(undefined, true)
         updateVestingInfo(undefined, true)
-        // updateGmxSupply(undefined, true)
+        updateGmxSupply(undefined, true)
       })
       return () => {
         library.removeAllListeners('block')
@@ -449,7 +446,7 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
       updateStakedGmxSupply,
       // updateGmxPrice,
       updateVestingInfo,
-      // updateGmxSupply
+      updateGmxSupply
     ])
 
   useEffect(() => {

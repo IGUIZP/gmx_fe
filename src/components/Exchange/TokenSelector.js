@@ -56,7 +56,7 @@ export default function TokenSelector(props) {
           {tokens.map(token => {
             let tokenPopupImage;
             try {
-              tokenPopupImage = ['gt', 'wgt'].includes(token.symbol.toLowerCase()) ? require('../../img/' + 'gt.png')
+              tokenPopupImage = ['gt', 'wgt'].includes(token.symbol.toLowerCase()) ? require('../../img/gt.png')
               :require('../../img/ic_' + token.symbol.toLowerCase() + '_40.svg')
             } catch (error) {
               try {

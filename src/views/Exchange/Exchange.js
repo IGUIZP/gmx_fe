@@ -20,7 +20,7 @@ import {
   getDeltaStr,
   useChainId,
   getInfoTokens,
-  useAccountOrders
+  // useAccountOrders
 } from '../../Helpers'
 import { getConstant } from '../../Constants'
 import { approvePlugin } from '../../Api'
@@ -37,7 +37,7 @@ import Checkbox from '../../components/Checkbox/Checkbox'
 import SwapBox from '../../components/Exchange/SwapBox'
 import ExchangeTVChart from '../../components/Exchange/ExchangeTVChart'
 import PositionsList from '../../components/Exchange/PositionsList'
-import OrdersList from '../../components/Exchange/OrdersList'
+// import OrdersList from '../../components/Exchange/OrdersList'
 import TradeHistory from '../../components/Exchange/TradeHistory'
 import ExchangeWalletTokens from '../../components/Exchange/ExchangeWalletTokens'
 import ExchangeBanner from '../../components/Exchange/ExchangeBanner'
