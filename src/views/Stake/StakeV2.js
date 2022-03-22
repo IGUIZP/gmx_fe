@@ -609,12 +609,12 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
                   {formatKeyAmount(processedData, "totalNativeTokenRewards", 18, 4, true)} (${formatKeyAmount(processedData, "totalNativeTokenRewardsUsd", USD_DECIMALS, 2, true)})
                 </div>
               </div>
-              <div className="App-card-row">
+              {/* <div className="App-card-row">
                 <div className="label">GT</div>
                 <div>
                   {formatKeyAmount(processedData, "totalVesterRewards", 18, 4, true)} (${formatKeyAmount(processedData, "totalVesterRewardsUsd", USD_DECIMALS, 2, true)})
                 </div>
-              </div>
+              </div> */}
               <div className="App-card-row">
                 <div className="label">Total</div>
                 <div>

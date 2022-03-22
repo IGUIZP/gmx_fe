@@ -1735,6 +1735,7 @@ export default function SwapBox(props) {
       isLong ? "Long" : "Short"
     } by ${formatAmount(toUsdMax, USD_DECIMALS, 2)} USD`;
 
+    console.log(chainId, contract, method, params, value)
     Api.callContract(chainId, contract, method, params, {
       value,
       setPendingTxns,
