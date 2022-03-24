@@ -43,7 +43,6 @@ const TOKENS = {
       symbol: "BNB",
       decimals: 18,
       address: "0x196EBEd51369390Ef2945Aecd0343c5496f7290a",
-      isWrapped: true,
       imageUrl:
         "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png"
     },
@@ -52,7 +51,6 @@ const TOKENS = {
       symbol: "DAI",
       decimals: 18,
       address: "0x2bBa033B205C93ee37A72De2836ccB010f609844",
-      isWrapped: true,
       isStable: true,
       imageUrl:
         "https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389"

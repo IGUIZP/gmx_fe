@@ -21,7 +21,7 @@ import {
   formatAmount,
   formatKeyAmount,
   getChainName,
-  approveTokens,
+  // approveTokens,
   useLocalStorageSerializeKey,
   useChainId,
   GLP_DECIMALS,
@@ -42,169 +42,169 @@ import { getContract } from '../../Addresses'
 
 import './StakeV2.css';
 
-function CompoundModal(props) {
-  const {
-    isVisible,
-    setIsVisible,
-    rewardRouterAddress,
-    active,
-    account,
-    library,
-    chainId,
-    setPendingTxns,
-    totalVesterRewards,
-    nativeTokenSymbol,
-    wrappedTokenSymbol
-  } = props
-  const [isCompounding, setIsCompounding] = useState(false)
-	const [shouldClaimGmx, setShouldClaimGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-claim-gmx"], true)
-	const [shouldStakeGmx, setShouldStakeGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-stake-gmx"], true)
-	const [shouldClaimEsGmx, setShouldClaimEsGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-claim-es-gmx"], true)
-	const [shouldStakeEsGmx, setShouldStakeEsGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-stake-es-gmx"], true)
-	const [shouldStakeMultiplierPoints, setShouldStakeMultiplierPoints] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-stake-multiplier-points"], true)
-	const [shouldClaimWeth, setShouldClaimWeth] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-claim-weth"], true)
-	const [shouldConvertWeth, setShouldConvertWeth] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-convert-weth"], true)
+// function CompoundModal(props) {
+//   const {
+//     isVisible,
+//     setIsVisible,
+//     rewardRouterAddress,
+//     active,
+//     account,
+//     library,
+//     chainId,
+//     setPendingTxns,
+//     totalVesterRewards,
+//     nativeTokenSymbol,
+//     wrappedTokenSymbol
+//   } = props
+//   const [isCompounding, setIsCompounding] = useState(false)
+// 	const [shouldClaimGmx, setShouldClaimGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-claim-gmx"], true)
+// 	const [shouldStakeGmx, setShouldStakeGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-stake-gmx"], true)
+// 	const [shouldClaimEsGmx, setShouldClaimEsGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-claim-es-gmx"], true)
+// 	const [shouldStakeEsGmx, setShouldStakeEsGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-stake-es-gmx"], true)
+// 	const [shouldStakeMultiplierPoints, setShouldStakeMultiplierPoints] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-stake-multiplier-points"], true)
+// 	const [shouldClaimWeth, setShouldClaimWeth] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-claim-weth"], true)
+// 	const [shouldConvertWeth, setShouldConvertWeth] = useLocalStorageSerializeKey([chainId, "StakeV2-compound-should-convert-weth"], true)
 
-  const gmxAddress = getContract(chainId, "GMX")
-  const stakedGmxTrackerAddress = getContract(chainId, "StakedGmxTracker")
+//   const gmxAddress = getContract(chainId, "GMX")
+//   const stakedGmxTrackerAddress = getContract(chainId, "StakedGmxTracker")
 
-  const [isApproving, setIsApproving] = useState(false)
+//   const [isApproving, setIsApproving] = useState(false)
 
-  const { data: tokenAllowance, mutate: updateTokenAllowance } = useSWR(active && [active, chainId, gmxAddress, "allowance", account, stakedGmxTrackerAddress], {
-    fetcher: fetcher(library, Token),
-  })
+//   const { data: tokenAllowance, mutate: updateTokenAllowance } = useSWR(active && [active, chainId, gmxAddress, "allowance", account, stakedGmxTrackerAddress], {
+//     fetcher: fetcher(library, Token),
+//   })
 
-  const needApproval = shouldStakeGmx && tokenAllowance && totalVesterRewards && totalVesterRewards.gt(tokenAllowance)
+//   const needApproval = shouldStakeGmx && tokenAllowance && totalVesterRewards && totalVesterRewards.gt(tokenAllowance)
 
-  useEffect(() => {
-    if (active) {
-      library.on('block', () => {
-        updateTokenAllowance(undefined, true)
-      })
-      return () => {
-        library.removeAllListeners('block')
-      }
-    }
-  }, [active, library, updateTokenAllowance])
+//   useEffect(() => {
+//     if (active) {
+//       library.on('block', () => {
+//         updateTokenAllowance(undefined, true)
+//       })
+//       return () => {
+//         library.removeAllListeners('block')
+//       }
+//     }
+//   }, [active, library, updateTokenAllowance])
 
-  const isPrimaryEnabled = () => {
-    return !isCompounding && !isApproving && !isCompounding
-  }
+//   const isPrimaryEnabled = () => {
+//     return !isCompounding && !isApproving && !isCompounding
+//   }
 
-  const getPrimaryText = () => {
-    if (isApproving) { return `Approving GMX...` }
-    if (needApproval) { return `Approve GMX` }
-    if (isCompounding) { return "Compounding..." }
-    return "Compound"
-  }
+//   const getPrimaryText = () => {
+//     if (isApproving) { return `Approving GMX...` }
+//     if (needApproval) { return `Approve GMX` }
+//     if (isCompounding) { return "Compounding..." }
+//     return "Compound"
+//   }
 
-  const onClickPrimary = () => {
-    if (needApproval) {
-      approveTokens({
-        setIsApproving,
-        library,
-        tokenAddress: gmxAddress,
-        spender: stakedGmxTrackerAddress,
-        chainId
-      })
-      return
-    }
+//   const onClickPrimary = () => {
+//     if (needApproval) {
+//       approveTokens({
+//         setIsApproving,
+//         library,
+//         tokenAddress: gmxAddress,
+//         spender: stakedGmxTrackerAddress,
+//         chainId
+//       })
+//       return
+//     }
 
-    setIsCompounding(true)
+//     setIsCompounding(true)
 
-    const contract = new ethers.Contract(rewardRouterAddress, RewardRouter.abi, library.getSigner())
-    callContract(chainId, contract, "handleRewards", [
-      shouldClaimGmx || shouldStakeGmx,
-      shouldStakeGmx,
-      shouldClaimEsGmx || shouldStakeEsGmx,
-      shouldStakeEsGmx,
-      shouldStakeMultiplierPoints,
-      shouldClaimWeth || shouldConvertWeth,
-      shouldConvertWeth
-    ], {
-      sentMsg: "Compound submitted!",
-      failMsg: "Compound failed.",
-      successMsg: "Compound completed.",
-      setPendingTxns
-    })
-    .then(async (res) => {
-      setIsVisible(false)
-    })
-    .finally(() => {
-      setIsCompounding(false)
-    })
-  }
+//     const contract = new ethers.Contract(rewardRouterAddress, RewardRouter.abi, library.getSigner())
+//     callContract(chainId, contract, "handleRewards", [
+//       shouldClaimGmx || shouldStakeGmx,
+//       shouldStakeGmx,
+//       shouldClaimEsGmx || shouldStakeEsGmx,
+//       shouldStakeEsGmx,
+//       shouldStakeMultiplierPoints,
+//       shouldClaimWeth || shouldConvertWeth,
+//       shouldConvertWeth
+//     ], {
+//       sentMsg: "Compound submitted!",
+//       failMsg: "Compound failed.",
+//       successMsg: "Compound completed.",
+//       setPendingTxns
+//     })
+//     .then(async (res) => {
+//       setIsVisible(false)
+//     })
+//     .finally(() => {
+//       setIsCompounding(false)
+//     })
+//   }
 
-  const toggleShouldStakeGmx = (value) => {
-    if (value) {
-      setShouldClaimGmx(true)
-    }
-    setShouldStakeGmx(value)
-  }
+//   const toggleShouldStakeGmx = (value) => {
+//     if (value) {
+//       setShouldClaimGmx(true)
+//     }
+//     setShouldStakeGmx(value)
+//   }
 
-  const toggleShouldStakeEsGmx = (value) => {
-    if (value) {
-      setShouldClaimEsGmx(true)
-    }
-    setShouldStakeEsGmx(value)
-  }
+//   const toggleShouldStakeEsGmx = (value) => {
+//     if (value) {
+//       setShouldClaimEsGmx(true)
+//     }
+//     setShouldStakeEsGmx(value)
+//   }
 
-  const toggleConvertWeth = (value) => {
-    if (value) {
-      setShouldClaimWeth(true)
-    }
-    setShouldConvertWeth(value)
-  }
+//   const toggleConvertWeth = (value) => {
+//     if (value) {
+//       setShouldClaimWeth(true)
+//     }
+//     setShouldConvertWeth(value)
+//   }
 
-  return (
-    <div className="StakeModal">
-      <Modal isVisible={isVisible} setIsVisible={setIsVisible} label="Compound Rewards">
-        <div className="CompoundModal-menu">
-          <div>
-  					<Checkbox isChecked={shouldStakeMultiplierPoints} setIsChecked={setShouldStakeMultiplierPoints}>
-  						Stake Multiplier Points
-  					</Checkbox>
-          </div>
-          <div>
-  					<Checkbox isChecked={shouldClaimGmx} setIsChecked={setShouldClaimGmx} disabled={shouldStakeGmx}>
-  						Claim GMX Rewards
-  					</Checkbox>
-          </div>
-          <div>
-  					<Checkbox isChecked={shouldStakeGmx} setIsChecked={toggleShouldStakeGmx}>
-  						Stake GMX Rewards
-  					</Checkbox>
-          </div>
-          <div>
-  					<Checkbox isChecked={shouldClaimEsGmx} setIsChecked={setShouldClaimEsGmx} disabled={shouldStakeEsGmx}>
-  						Claim esGMX Rewards
-  					</Checkbox>
-          </div>
-          <div>
-  					<Checkbox isChecked={shouldStakeEsGmx} setIsChecked={toggleShouldStakeEsGmx}>
-  						Stake esGMX Rewards
-  					</Checkbox>
-          </div>
-          <div>
-  					<Checkbox isChecked={shouldClaimWeth} setIsChecked={setShouldClaimWeth} disabled={shouldConvertWeth}>
-  						Claim {wrappedTokenSymbol} Rewards
-  					</Checkbox>
-          </div>
-          <div>
-  					<Checkbox isChecked={shouldConvertWeth} setIsChecked={toggleConvertWeth}>
-  						Convert {wrappedTokenSymbol} to {nativeTokenSymbol}
-  					</Checkbox>
-          </div>
-        </div>
-        <div className="Exchange-swap-button-container">
-          <button className="App-cta Exchange-swap-button" onClick={ onClickPrimary } disabled={!isPrimaryEnabled()}>
-            {getPrimaryText()}
-          </button>
-        </div>
-      </Modal>
-    </div>
-  )
-}
+//   return (
+//     <div className="StakeModal">
+//       <Modal isVisible={isVisible} setIsVisible={setIsVisible} label="Compound Rewards">
+//         <div className="CompoundModal-menu">
+//           <div>
+//   					<Checkbox isChecked={shouldStakeMultiplierPoints} setIsChecked={setShouldStakeMultiplierPoints}>
+//   						Stake Multiplier Points
+//   					</Checkbox>
+//           </div>
+//           <div>
+//   					<Checkbox isChecked={shouldClaimGmx} setIsChecked={setShouldClaimGmx} disabled={shouldStakeGmx}>
+//   						Claim GMX Rewards
+//   					</Checkbox>
+//           </div>
+//           <div>
+//   					<Checkbox isChecked={shouldStakeGmx} setIsChecked={toggleShouldStakeGmx}>
+//   						Stake GMX Rewards
+//   					</Checkbox>
+//           </div>
+//           <div>
+//   					<Checkbox isChecked={shouldClaimEsGmx} setIsChecked={setShouldClaimEsGmx} disabled={shouldStakeEsGmx}>
+//   						Claim esGMX Rewards
+//   					</Checkbox>
+//           </div>
+//           <div>
+//   					<Checkbox isChecked={shouldStakeEsGmx} setIsChecked={toggleShouldStakeEsGmx}>
+//   						Stake esGMX Rewards
+//   					</Checkbox>
+//           </div>
+//           <div>
+//   					<Checkbox isChecked={shouldClaimWeth} setIsChecked={setShouldClaimWeth} disabled={shouldConvertWeth}>
+//   						Claim {wrappedTokenSymbol} Rewards
+//   					</Checkbox>
+//           </div>
+//           <div>
+//   					<Checkbox isChecked={shouldConvertWeth} setIsChecked={toggleConvertWeth}>
+//   						Convert {wrappedTokenSymbol} to {nativeTokenSymbol}
+//   					</Checkbox>
+//           </div>
+//         </div>
+//         <div className="Exchange-swap-button-container">
+//           <button className="App-cta Exchange-swap-button" onClick={ onClickPrimary } disabled={!isPrimaryEnabled()}>
+//             {getPrimaryText()}
+//           </button>
+//         </div>
+//       </Modal>
+//     </div>
+//   )
+// }
 
 function ClaimModal(props) {
   const {
@@ -306,7 +306,7 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
 
   const chainName = getChainName(chainId)
 
-  const [isCompoundModalVisible, setIsCompoundModalVisible] = useState(false)
+  // const [isCompoundModalVisible, setIsCompoundModalVisible] = useState(false)
   const [isClaimModalVisible, setIsClaimModalVisible] = useState(false)
 
   const rewardRouterAddress = getContract(chainId, "RewardRouter")
@@ -477,7 +477,7 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
 
   return (
     <div className="StakeV2 Page page-layout">
-      <CompoundModal
+      {/* <CompoundModal
         active={active}
         account={account}
         setPendingTxns={setPendingTxns}
@@ -489,7 +489,7 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
         nativeTokenSymbol={nativeTokenSymbol}
         library={library}
         chainId={chainId}
-      />
+      /> */}
       <ClaimModal
         active={active}
         account={account}
@@ -632,7 +632,7 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
               <div className="App-card-bottom">
                 <div className="App-card-divider"></div>
                 <div className="App-card-options">
-                  {active && <button className="App-button-option App-card-option" onClick={() => setIsCompoundModalVisible(true)}>Compound</button>}
+                  {/* {active && <button className="App-button-option App-card-option" onClick={() => setIsCompoundModalVisible(true)}>Compound</button>} */}
                   {active && <button className="App-button-option App-card-option" onClick={() => setIsClaimModalVisible(true)}>Claim</button>}
                   {!active && <button className="App-button-option App-card-option" onClick={() => connectWallet()}>Connect Wallet</button>}
                 </div>

@@ -1945,14 +1945,14 @@ export default function SwapBox(props) {
   if (isLong && toTokenInfo && toTokenInfo.fundingRate) {
     borrowFeeText = formatAmount(toTokenInfo.fundingRate, 4, 4) + "% / 1h";
     if (toTokenInfo.fundingRate.eq(0)) {
-      // hasZeroBorrowFee = true
+      hasZeroBorrowFee = true
     }
   }
   if (isShort && shortCollateralToken && shortCollateralToken.fundingRate) {
     borrowFeeText =
       formatAmount(shortCollateralToken.fundingRate, 4, 4) + "% / 1h";
     if (shortCollateralToken.fundingRate.eq(0)) {
-      // hasZeroBorrowFee = true
+      hasZeroBorrowFee = true
     }
   }
 

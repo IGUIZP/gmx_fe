@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
+import TooltipComponent from "../../components/Tooltip/Tooltip";
 
 import { useWeb3React } from '@web3-react/core'
 import useSWR from 'swr'
@@ -247,6 +248,83 @@ export default function GlpSwap(props) {
   //   stakedGlpTrackerApr = stakedGlpTrackerAnnualRewardsUsd.mul(BASIS_POINTS_DIVISOR).div(glpSupplyUsd)
   //   totalApr = totalApr.add(stakedGlpTrackerApr)
   // }
+
+  let adjustedUsdgSupply = bigNumberify(0);
+
+  for (let i = 0; i < tokenList.length; i++) {
+    const token = tokenList[i];
+    const tokenInfo = infoTokens[token.address];
+    if (tokenInfo && tokenInfo.usdgAmount) {
+      adjustedUsdgSupply = adjustedUsdgSupply.add(tokenInfo.usdgAmount);
+    }
+  }
+
+  const getWeightText = (tokenInfo) => {
+    if (
+      !tokenInfo.weight ||
+      !tokenInfo.usdgAmount ||
+      !adjustedUsdgSupply ||
+      adjustedUsdgSupply.eq(0) ||
+      !totalTokenWeights
+    ) {
+      return "...";
+    }
+
+    const currentWeightBps = tokenInfo.usdgAmount.mul(BASIS_POINTS_DIVISOR).div(adjustedUsdgSupply);
+    const targetWeightBps = tokenInfo.weight.mul(BASIS_POINTS_DIVISOR).div(totalTokenWeights);
+
+    const weightText = `${formatAmount(currentWeightBps, 2, 2, false)}% / ${formatAmount(
+      targetWeightBps,
+      2,
+      2,
+      false
+    )}%`;
+
+    return (
+      <TooltipComponent
+        handle={weightText}
+        position="right-bottom"
+        renderContent={() => {
+          return (
+            <>
+              Current Weight: {formatAmount(currentWeightBps, 2, 2, false)}%<br />
+              Target Weight: {formatAmount(targetWeightBps, 2, 2, false)}%<br />
+              <br />
+              {currentWeightBps.lt(targetWeightBps) && (
+                <div>
+                  {tokenInfo.symbol} is below its target weight.
+                  <br />
+                  <br />
+                  Get lower fees to{" "}
+                  <Link to="/buy_glp" target="_blank" rel="noopener noreferrer">
+                    buy GLP
+                  </Link>{" "}
+                  with {tokenInfo.symbol},&nbsp; and to{" "}
+                  <Link to="/trade" target="_blank" rel="noopener noreferrer">
+                    swap
+                  </Link>{" "}
+                  {tokenInfo.symbol} for other tokens.
+                </div>
+              )}
+              {currentWeightBps.gt(targetWeightBps) && (
+                <div>
+                  {tokenInfo.symbol} is above its target weight.
+                  <br />
+                  <br />
+                  Get lower fees to{" "}
+                  <Link to="/trade" target="_blank" rel="noopener noreferrer">
+                    swap
+                  </Link>{" "}
+                  tokens for {tokenInfo.symbol}.
+                </div>
+              )}
+              <br />
+            </>
+          );
+        }}
+      />
+    );
+  };
 
   useEffect(() => {
     if (active) {
@@ -791,6 +869,7 @@ export default function GlpSwap(props) {
                     </>
                   }} />
                 </th>
+                <th>WEIGHT</th>
                 <th></th>
               </tr>
             </thead>
@@ -830,6 +909,11 @@ export default function GlpSwap(props) {
                   :require('../../img/ic_' + token.symbol.toLowerCase() + '_40.svg')
                 } catch (error) {
                   // console.log(error)
+                  try {
+                    tokenImage = require('../../img/' + token.symbol.toLowerCase() + '.png')
+                  } catch (error) {
+                    tokenImage = require("../../img/ic_eth_40.svg");
+                  }
                 }
 
                 return (
@@ -876,6 +960,7 @@ export default function GlpSwap(props) {
                     <td>
                       {formatAmount(tokenFeeBps, 2, 2, true, "-")}{(tokenFeeBps !== undefined && tokenFeeBps.toString().length > 0) ? "%" : ""}
                     </td>
+                    <td>{getWeightText(tokenInfo)}</td>
                     <td>
                       <button className={cx("App-button-option action-btn", isBuying ? 'buying' : 'selling')} onClick={() => selectToken(token)}>
                         {isBuying ? 'Buy with ' + token.symbol : 'Sell for ' + token.symbol}
@@ -966,6 +1051,14 @@ export default function GlpSwap(props) {
                       </div>
                       <div>
                         {formatAmount(tokenFeeBps, 2, 2, true, "-")}{(tokenFeeBps !== undefined && tokenFeeBps.toString().length > 0) ? "%" : ""}
+                      </div>
+                    </div>
+                    <div className="App-card-row">
+                      <div className="label">
+                      WEIGHT
+                      </div>
+                      <div>
+                        {getWeightText(tokenInfo)}
                       </div>
                     </div>
                     <div className="App-card-divider"></div>
