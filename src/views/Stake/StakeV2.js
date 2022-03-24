@@ -218,8 +218,8 @@ function ClaimModal(props) {
     wrappedTokenSymbol
   } = props
   const [isClaiming, setIsClaiming] = useState(false)
-	const [shouldClaimGmx, setShouldClaimGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-claim-should-claim-gmx"], true)
-	const [shouldClaimEsGmx, setShouldClaimEsGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-claim-should-claim-es-gmx"], true)
+	// const [shouldClaimGmx, setShouldClaimGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-claim-should-claim-gmx"], true)
+	// const [shouldClaimEsGmx, setShouldClaimEsGmx] = useLocalStorageSerializeKey([chainId, "StakeV2-claim-should-claim-es-gmx"], true)
 	const [shouldClaimWeth, setShouldClaimWeth] = useLocalStorageSerializeKey([chainId, "StakeV2-claim-should-claim-weth"], true)
 	const [shouldConvertWeth, setShouldConvertWeth] = useLocalStorageSerializeKey([chainId, "StakeV2-claim-should-convert-weth"], true)
 
@@ -237,9 +237,9 @@ function ClaimModal(props) {
 
     const contract = new ethers.Contract(rewardRouterAddress, RewardRouter.abi, library.getSigner())
     callContract(chainId, contract, "handleRewards", [
-      shouldClaimGmx,
+      false, // shouldClaimGmx,
       false, // shouldStakeGmx
-      shouldClaimEsGmx,
+      false, // shouldClaimEsGmx,
       false, // shouldStakeEsGmx
       false, // shouldStakeMultiplierPoints
       shouldClaimWeth,
@@ -269,7 +269,7 @@ function ClaimModal(props) {
     <div className="StakeModal">
       <Modal isVisible={isVisible} setIsVisible={setIsVisible} label="Claim Rewards">
         <div className="CompoundModal-menu">
-          <div>
+          {/* <div>
   					<Checkbox isChecked={shouldClaimGmx} setIsChecked={setShouldClaimGmx}>
   						Claim GMX Rewards
   					</Checkbox>
@@ -278,7 +278,7 @@ function ClaimModal(props) {
   					<Checkbox isChecked={shouldClaimEsGmx} setIsChecked={setShouldClaimEsGmx}>
   						Claim esGMX Rewards
   					</Checkbox>
-          </div>
+          </div> */}
           <div>
   					<Checkbox isChecked={shouldClaimWeth} setIsChecked={setShouldClaimWeth} disabled={shouldConvertWeth}>
   						Claim {wrappedTokenSymbol} Rewards
