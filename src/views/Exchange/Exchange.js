@@ -20,7 +20,7 @@ import {
   getDeltaStr,
   useChainId,
   getInfoTokens,
-  // useAccountOrders
+  useAccountOrders
 } from '../../Helpers'
 import { getConstant } from '../../Constants'
 import { approvePlugin } from '../../Api'
@@ -37,7 +37,7 @@ import Checkbox from '../../components/Checkbox/Checkbox'
 import SwapBox from '../../components/Exchange/SwapBox'
 import ExchangeTVChart from '../../components/Exchange/ExchangeTVChart'
 import PositionsList from '../../components/Exchange/PositionsList'
-// import OrdersList from '../../components/Exchange/OrdersList'
+import OrdersList from '../../components/Exchange/OrdersList'
 import TradeHistory from '../../components/Exchange/TradeHistory'
 import ExchangeWalletTokens from '../../components/Exchange/ExchangeWalletTokens'
 import ExchangeBanner from '../../components/Exchange/ExchangeBanner'
@@ -319,10 +319,10 @@ export default function Exchange({ savedIsPnlInLeverage, setSavedIsPnlInLeverage
   const infoTokens = getInfoTokens(tokens, tokenBalances, whitelistedTokens, vaultTokenInfo, fundingRateInfo)
   const { positions, positionsMap } = getPositions(chainId, positionQuery, positionData, infoTokens, savedIsPnlInLeverage)
 
-  const flagOrdersEnabled = false
-  // const [orders, updateOrders] = useAccountOrders(flagOrdersEnabled)
+  const flagOrdersEnabled = true
+  const [orders, updateOrders] = useAccountOrders(flagOrdersEnabled)
   // const [orders, updateOrders] = useState(undefined)
-  const orders = [];
+  // const orders = [];
 
   const [isWaitingForPluginApproval, setIsWaitingForPluginApproval] = useState(false);
   const [isWaitingForPositionManagerApproval, setIsWaitingForPositionManagerApproval] = useState(false);
@@ -428,29 +428,30 @@ export default function Exchange({ savedIsPnlInLeverage, setSavedIsPnlInLeverage
           />
         }
         {
-        //listSection === 'Orders' &&
-          // <OrdersList
-          //   active={active}
-          //   library={library}
-          //   pendingTxns={pendingTxns}
-          //   setPendingTxns={setPendingTxns}
-          //   infoTokens={infoTokens}
-          //   positionsMap={positionsMap}
-          //   chainId={chainId}
-          //   orders={orders}
-          //   updateOrders={updateOrders}
-          //   totalTokenWeights={totalTokenWeights}
-          //   usdgSupply={usdgSupply}
-          // />
-        }
-        {listSection === 'Trades' &&
-          <TradeHistory
-            account={account}
+        listSection === 'Orders' &&
+          <OrdersList
+            active={active}
+            library={library}
+            pendingTxns={pendingTxns}
+            setPendingTxns={setPendingTxns}
             infoTokens={infoTokens}
-            getTokenInfo={getTokenInfo}
+            positionsMap={positionsMap}
             chainId={chainId}
-            nativeTokenAddress={nativeTokenAddress}
+            orders={orders}
+            updateOrders={updateOrders}
+            totalTokenWeights={totalTokenWeights}
+            usdgSupply={usdgSupply}
           />
+        }
+        {
+        // listSection === 'Trades' &&
+          // <TradeHistory
+          //   account={account}
+          //   infoTokens={infoTokens}
+          //   getTokenInfo={getTokenInfo}
+          //   chainId={chainId}
+          //   nativeTokenAddress={nativeTokenAddress}
+          // />
         }
       </div>
     )
