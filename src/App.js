@@ -58,7 +58,7 @@ import "./App.css";
 import "./Input.css";
 import "./AppOrder.css";
 
-import logoImg from "./img/logo_GMX.svg";
+import logoImg from "./img/logo.svg";
 import logoSmallImg from "./img/logo_GMX_small.svg";
 import connectWalletImg from "./img/ic_wallet_24.svg";
 
@@ -99,7 +99,7 @@ function AppHeaderLinks({ small, openSettings, clickCloseIcon }) {
             <FiX className="App-header-menu-icon" />
           </div>
           <a className="App-header-link-main" href="/">
-            <img src={logoImg} alt="GMX Logo" />
+            <img src={logoImg} alt="GT Logo" />
           </a>
         </div>
       )}
@@ -452,8 +452,8 @@ function FullApp() {
             <div className="App-header large">
               <div className="App-header-container-left">
                 <a className="App-header-link-main" href="/">
-                  <img src={logoImg} className="big" alt="GMX Logo" />
-                  <img src={logoSmallImg} className="small" alt="GMX Logo" />
+                  <img src={logoImg} className="big" alt="GT Logo" />GateChain
+                  <img src={logoSmallImg} className="small" alt="GT Logo" />
                 </a>
                 <AppHeaderLinks />
               </div>
@@ -494,8 +494,8 @@ function FullApp() {
                     className="App-header-link-main clickable"
                     onClick={() => setIsDrawerVisible(!isDrawerVisible)}
                   >
-                    <img src={logoImg} className="big" alt="GMX Logo" />
-                    <img src={logoSmallImg} className="small" alt="GMX Logo" />
+                    <img src={logoImg} className="big" alt="GT Logo" />
+                    <img src={logoSmallImg} className="small" alt="GT Logo" />
                   </div>
                 </div>
                 <div className="App-header-container-right">

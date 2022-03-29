@@ -364,7 +364,7 @@ export default function Exchange({ savedIsPnlInLeverage, setSavedIsPnlInLeverage
   const LIST_SECTIONS = [
     'Positions',
     flagOrdersEnabled ? 'Orders' : undefined,
-    'Trades'
+    // 'Trades'
   ].filter(Boolean)
   let [listSection, setListSection] = useLocalStorageByChainId(chainId, 'List-section-v2', LIST_SECTIONS[0]);
   const LIST_SECTIONS_LABELS = {

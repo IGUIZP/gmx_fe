@@ -640,7 +640,7 @@ export default function StakeV1() {
       </div>
       <div className="App-warning Stake-warning">
         The <Link to="/migrate">
-          GMX migration
+          GT migration
         </Link> is in progress, please migrate your GMT, xGMT, GMT-USDG and xGMT-USDG tokens.
         <br/>
         USDG tokens will continue to function as before and do not need to be migrated.

@@ -457,11 +457,11 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
   if (totalRewardTokensAndGlp && totalRewardTokensAndGlp.gt(0)) {
     let gmxAmountStr
     if (processedData.gmxInStakedGmx && processedData.gmxInStakedGmx.gt(0)) {
-      gmxAmountStr = formatAmount(processedData.gmxInStakedGmx, 18, 2, true) + " GMX"
+      gmxAmountStr = formatAmount(processedData.gmxInStakedGmx, 18, 2, true) + " GT"
     }
     let esGmxAmountStr
     if (processedData.esGmxInStakedGmx && processedData.esGmxInStakedGmx.gt(0)) {
-      esGmxAmountStr = formatAmount(processedData.esGmxInStakedGmx, 18, 2, true) + " esGMX"
+      esGmxAmountStr = formatAmount(processedData.esGmxInStakedGmx, 18, 2, true) + " esGT"
     }
     let mpAmountStr
     if (processedData.bonusGmxInFeeGmx && processedData.bnGmxInFeeGmx.gt(0)) {
@@ -549,10 +549,10 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
                           <span className="label">{nativeTokenSymbol} ({wrappedTokenSymbol}) APR</span>
                           <span>{formatKeyAmount(processedData, "glpAprForNativeToken", 2, 2, true)}%</span>
                         </div>
-                        <div className="Tooltip-row">
+                        {/* <div className="Tooltip-row">
                           <span className="label">Escrowed GMX APR</span>
                           <span>{formatKeyAmount(processedData, "glpAprForEsGmx", 2, 2, true)}%</span>
-                        </div>
+                        </div> */}
                       </>
                     }}
                   />
@@ -570,10 +570,10 @@ export default function StakeV2({ setPendingTxns, connectWallet }) {
                           <span className="label">{nativeTokenSymbol} ({wrappedTokenSymbol})</span>
                           <span>{formatKeyAmount(processedData, "feeGlpTrackerRewards", 18, 4)} (${formatKeyAmount(processedData, "feeGlpTrackerRewardsUsd", USD_DECIMALS, 2, true)})</span>
                         </div>
-                        <div className="Tooltip-row">
+                        {/* <div className="Tooltip-row">
                           <span className="label">Escrowed GMX</span>
                           <span>{formatKeyAmount(processedData, "stakedGlpTrackerRewards", 18, 4)} (${formatKeyAmount(processedData, "stakedGlpTrackerRewardsUsd", USD_DECIMALS, 2, true)})</span>
-                        </div>
+                        </div> */}
                       </>
                     }}
                   />

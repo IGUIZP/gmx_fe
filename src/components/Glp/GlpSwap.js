@@ -706,10 +706,6 @@ export default function GlpSwap(props) {
                       <span className="label">{nativeTokenSymbol} ({wrappedTokenSymbol}) APR</span>
                       <span>{formatAmount(feeGlpTrackerApr, 2, 2, false)}%</span>
                     </div>
-                    <div className="Tooltip-row">
-                      <span className="label">Escrowed GMX APR</span>
-                      {/* <span>{formatAmount(stakedGlpTrackerApr, 2, 2, false)}%</span> */}
-                    </div>
                   </>
                 }} />
               </div>
