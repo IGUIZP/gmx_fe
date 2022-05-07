@@ -2737,7 +2737,7 @@ export function getProcessedData(
           .mul(BASIS_POINTS_DIVISOR)
           .div(data.glpSupplyUsd)
       : bigNumberify(0);
-  data.glpAprTotal = data.glpAprForNativeToken.add(data.glpAprForEsGmx);
+  data.glpAprTotal = data.glpAprForNativeToken;
 
   data.totalGlpRewardsUsd = data.stakedGlpTrackerRewardsUsd.add(
     data.feeGlpTrackerRewardsUsd

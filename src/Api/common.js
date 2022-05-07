@@ -1,6 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
-const CHAINLINK_GRAPH_API_URL = "https://api.thegraph.com/subgraphs/name/deividask/chainlink";
+// const CHAINLINK_GRAPH_API_URL = "https://api.thegraph.com/subgraphs/name/deividask/chainlink";
+const CHAINLINK_GRAPH_API_URL = "http://139.162.71.94:8000/subgraphs/name/gmx";
 export const chainlinkClient = new ApolloClient({
   uri: CHAINLINK_GRAPH_API_URL,
   cache: new InMemoryCache()

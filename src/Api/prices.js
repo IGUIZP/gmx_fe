@@ -16,16 +16,11 @@ const BigNumber = ethers.BigNumber
 
 // Ethereum network, Chainlink Aggregator contracts
 const FEED_ID_MAP = {
-  "BTC_USD": "0xae74faa92cb67a95ebcab07358bc222e33a34da7",
-  "ETH_USD": "0x37bc7498f4ff12c19678ee8fe19d713b87f6a9e6",
-  "BNB_USD": "0xc45ebd0f901ba6b2b8c7e70b717778f055ef5e6d",
-  "LINK_USD": "0xdfd03bfc3465107ce570a0397b247f546a42d0fa",
-  "UNI_USD": "0x68577f915131087199fe48913d8b416b3984fd38",
-  "SUSHI_USD": "0x7213536a36094cd8a768a5e45203ec286cba2d74",
-  "AVAX_USD": "0x0fc3657899693648bba4dbd2d8b33b82e875105d",
-  "AAVE_USD": "0xe3f0dede4b499c07e12475087ab1a084b5f93bc0",
-  "YFI_USD": "0x8a4d74003870064d41d4f84940550911fbfccf04",
-  "SPELL_USD": "0x8640b23468815902e011948f3ab173e1e83f9879"
+  "BTC_USD": "0xF04B8cf2CB29cbE2FcFD0d6CdcD64A3d96b0e944",
+  "ETH_USD": "0x9359fec0A7a4180d3313208eb9F5fE335eb80F36",
+  "GT_USD": "0x948c46AE6010551a7F8aBbf5D0186a44D7D47Af3",
+  "BNB_USD": "0xCA4e0946138DCF6f3f12c6D44b77f12fbB5B308E",
+  "DAI_USD": "0xA9B2e4E3282a39A6f76Cd7B60f3B41D071D71902"
 };
 const timezoneOffset = -(new Date()).getTimezoneOffset() * 60
 
@@ -63,7 +58,7 @@ async function getChartPricesFromStats(chainId, symbol, period) {
   if (['WBTC', 'WETH', 'WAVAX', 'WGT'].includes(symbol)) {
     symbol = symbol.substr(1)
   }
-  const hostname = 'https://stats.gmx.io/' 
+  const hostname = 'https://stats.gmx.io/'
   // const hostname = 'http://localhost:3113/'
   const timeDiff = CHART_PERIODS[period] * 3000
   const from = Math.floor(Date.now() / 1000 - timeDiff)
@@ -132,13 +127,13 @@ function getCandlesFromPrices(prices, period) {
 }
 
 function getChainlinkChartPricesFromGraph(tokenSymbol, period) {
-  if (['WBTC', 'ETH', 'WAVAX'].includes(tokenSymbol)) {
+  if (['WBTC', 'WETH', 'WGT'].includes(tokenSymbol)) {
     tokenSymbol = tokenSymbol.substr(1)
   }
   const marketName = tokenSymbol + '_USD'
   const feedId = FEED_ID_MAP[marketName];
   if (!feedId) {
-    throw new Error(`undefined marketName ${marketName}`)
+    throw new Error(`undefined marketName ${feedId}`)
   }
 
   const PER_CHUNK = 1000;
@@ -146,14 +141,14 @@ function getChainlinkChartPricesFromGraph(tokenSymbol, period) {
   const requests = [];
   for (let i = 0; i < CHUNKS_TOTAL; i++) {
     const query = gql(`{
-      rounds(
+      chainlinkPrices(
         first: ${PER_CHUNK},
         skip: ${i * PER_CHUNK},
-        orderBy: unixTimestamp,
+        orderBy: timestamp,
         orderDirection: desc,
-        where: {feed: "${feedId}"}
+        where: {token: "${feedId}"}
       ) {
-        unixTimestamp,
+        timestamp,
         value
       }
     }`)
@@ -164,14 +159,14 @@ function getChainlinkChartPricesFromGraph(tokenSymbol, period) {
     let prices = [];
     const uniqTs = new Set();
     chunks.forEach(chunk => {
-      chunk.data.rounds.forEach(item => {
-        if (uniqTs.has(item.unixTimestamp)) {
+      chunk.data.chainlinkPrices.forEach(item => {
+        if (uniqTs.has(item.timestamp)) {
           return;
         }
 
-        uniqTs.add(item.unixTimestamp)
+        uniqTs.add(item.timestamp)
         prices.push([
-            item.unixTimestamp,
+            item.timestamp,
             Number(item.value) / 1e8
         ]);
       })
@@ -193,17 +188,18 @@ export function useChartPrices(chainId, symbol, isStable, period, currentAverage
   let { data: prices, mutate: updatePrices } = useSWR(swrKey, {
     fetcher: async (...args) => {
       try {
-        return await getChartPricesFromStats(chainId, symbol, period)
+        return await getChainlinkChartPricesFromGraph(symbol, period)
+        // return await getChartPricesFromStats(chainId, symbol, period)
       } catch (ex) {
         console.warn(ex)
         console.warn('Switching to graph chainlink data')
-        try {
-          return await getChainlinkChartPricesFromGraph(symbol, period)
-        } catch (ex2) {
-          console.warn('getChainlinkChartPricesFromGraph failed')
-          console.warn(ex2)
-          return []
-        }
+        // try {
+        //   return await getChainlinkChartPricesFromGraph(symbol, period)
+        // } catch (ex2) {
+        //   console.warn('getChainlinkChartPricesFromGraph failed')
+        //   console.warn(ex2)
+        //   return []
+        // }
       }
     },
     dedupingInterval: 60000,
